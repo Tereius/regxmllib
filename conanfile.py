@@ -21,7 +21,7 @@ class RegxmlLibConan(ConanFile):
     homepage = "https://github.com/IMFTool/regxmllib"
     url = "https://github.com/IMFTool/regxmllib"
     # ---Requirements---
-    requires = ["xerces-c/[>=3.2.5]"]
+    requires = []
     tool_requires = ["cmake/[>=3.21.1]", "ninja/[>=1.11.1]"]
     # ---Sources---
     exports = ["LICENSE.txt"]
@@ -41,6 +41,9 @@ class RegxmlLibConan(ConanFile):
             raise ConanInvalidConfiguration(f"{self.name} {self.version} is only supported for the following architectures on {self.settings.os}: {valid_arch}")
         if str(self.settings.os) == 'Windows' and self.options.shared:
             raise ConanInvalidConfiguration(f"{self.name} {self.version} does not support building shared library on Windows")
+
+    def requirements(self):
+        self.requires("xerces-c/[>=3.2.5]", options={"network": False, "shared": False})
 
     def config_options(self):
         if self.settings.os == "Windows":

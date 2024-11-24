@@ -24,21 +24,24 @@ endforeach()
 
 #unit tests
 
-enable_testing()
+if(BUILD_TESTING)
 
-include(CTest)
+    enable_testing()
 
-file( GLOB_RECURSE UNIT_TESTS src/test/cpp/*.cpp )
-file(COPY "src/test/resources" DESTINATION "${CMAKE_BINARY_DIR}")
+    include(CTest)
 
-foreach( UNIT_TEST_PATH ${UNIT_TESTS} )
-	get_filename_component(UNIT_TEST_NAME ${UNIT_TEST_PATH} NAME_WE)
+    file( GLOB_RECURSE UNIT_TESTS src/test/cpp/*.cpp )
+    file(COPY "src/test/resources" DESTINATION "${CMAKE_BINARY_DIR}")
 
-    add_executable(${UNIT_TEST_NAME} ${UNIT_TEST_PATH} )
+    foreach( UNIT_TEST_PATH ${UNIT_TESTS} )
+        get_filename_component(UNIT_TEST_NAME ${UNIT_TEST_PATH} NAME_WE)
 
-    target_link_libraries( ${UNIT_TEST_NAME} regxmllibc ${XercesC_LIBRARY})
-	add_test(${UNIT_TEST_NAME}  ${UNIT_TEST_NAME} WORKINGDIRECTORY "${CMAKE_BINARY_DIR}")
-endforeach( UNIT_TEST_PATH ${UNIT_TESTS} )
+        add_executable(${UNIT_TEST_NAME} ${UNIT_TEST_PATH} )
+
+        target_link_libraries( ${UNIT_TEST_NAME} regxmllibc ${XercesC_LIBRARY})
+        add_test(${UNIT_TEST_NAME}  ${UNIT_TEST_NAME} WORKINGDIRECTORY "${CMAKE_BINARY_DIR}")
+    endforeach( UNIT_TEST_PATH ${UNIT_TESTS} )
+endif()
 
 #install
 
