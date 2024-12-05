@@ -1,18 +1,14 @@
 cmake_minimum_required (VERSION 3.5)
 project (regxmllibc)
 
-include(FindXercesC)
 find_package(XercesC REQUIRED)
-include_directories( ${XercesC_INCLUDE_DIR}
-						src/main/cpp
-					)
-
+include_directories(src/main/cpp)
 
 file(GLOB_RECURSE SRC_FILES src/main/cpp/*.cpp src/main/cpp/*.h )
 add_library(${PROJECT_NAME} ${SRC_FILES})
 install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 
-target_link_libraries ( ${PROJECT_NAME} ${XercesC_LIBRARY} )
+target_link_libraries ( ${PROJECT_NAME} PRIVATE XercesC::XercesC )
 
 foreach(source IN LISTS SRC_FILES)
 	file(RELATIVE_PATH rel_source ${CMAKE_CURRENT_SOURCE_DIR}/src/main/cpp/com/ ${source})
